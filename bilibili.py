@@ -2,7 +2,7 @@ import requests
 import random
 import time
 
-cookie_file = open('cookie.txt', 'r')
+cookie_file = open('/app/cookie.txt', 'r')
 _COOKIE = cookie_file.read()
 cookie_file.close()
 
