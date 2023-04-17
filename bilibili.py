@@ -1,10 +1,16 @@
 import requests
 import random
 import time
+import os
 
-cookie_file = open('/app/cookie.txt', 'r')
+dir_path = os.path.dirname(os.path.abspath(__file__))
+cookie_file = open(os.path.join(dir_path, 'cookie.txt'), 'r')
 _COOKIE = cookie_file.read()
 cookie_file.close()
+
+def w_log(msg, filename='log.txt', encoding='utf-8'):
+    with open(os.path.join(dir_path, filename), 'a', encoding=encoding) as f:
+        f.write(msg + '\n')
 
 def extract_cookies(cookies):
     global _CSRF
@@ -13,7 +19,7 @@ def extract_cookies(cookies):
         _CSRF = cookies['bili_jct']
         return cookies
     except:
-        print("請使用正確Cookie!")
+        w_log("請使用正確Cookie!")
         exit(9)
 
 # 獲得 各類 B幣值
@@ -103,7 +109,7 @@ def get_day_coin():
 def send_coin(bvid):
     coins = get_day_coin()['coins']
     if coins >= 50:
-        print("不需要投幣, 呼叫錯誤")
+        w_log("不需要投幣, 呼叫錯誤")
         return False
 
     url = 'https://api.bilibili.com/x/web-interface/coin/add'
@@ -134,44 +140,44 @@ def xlive_sign():
     if resp.status_code == 200:
         resp_json = resp.json()
         if resp_json['code'] == 0:
-            print(resp_json['data']['text'])
+            w_log(resp_json['data']['text'])
             return True
-        print(resp_json['message'])
+        w_log(resp_json['message'])
     return False
 
 
 
 # 每日任務
-print(f'開始每日')
+w_log(f'開始每日')
 extract_cookies(_COOKIE)
-print(f'直播簽到')
+w_log(f'直播簽到')
 sign_res = xlive_sign()
-print(f'直播簽到結果 {sign_res}')
+w_log(f'直播簽到結果 {sign_res}')
 
 day_status = get_daily_task_status()
 video_bvids = get_rank_videos()['bvids']
 if day_status['share'] is False:
-    print(f'需要分享影片')
+    w_log(f'需要分享影片')
     video_bvid = random.choice(video_bvids)
     share_res = share_video(video_bvid)
     time.sleep(3)
-    print(f'分享影片結果 {share_res}')
+    w_log(f'分享影片結果 {share_res}')
 
 if day_status['watch'] is False:
-    print(f'需要觀看影片')
+    w_log(f'需要觀看影片')
     video_bvid = random.choice(video_bvids)
     watch_res = watch_video(video_bvid)
     time.sleep(3)
-    print(f'觀看影片結果 {watch_res}')
+    w_log(f'觀看影片結果 {watch_res}')
 
 if day_status['coins'] < 50:
-    print(f'需要投幣')
+    w_log(f'需要投幣')
     need_number = 5 - (day_status['coins'] / 10)
     for i in range(need_number):
         video_bvid = random.choice(video_bvids)
         send_coin(video_bvid)
-    print(f'本次投幣結果 {get_day_coin()}')
+    w_log(f'本次投幣結果 {get_day_coin()}')
 
 
 day_status_end = get_daily_task_status()
-print(f'每日進度 {day_status_end}')
+w_log(f'每日進度 {day_status_end}')
