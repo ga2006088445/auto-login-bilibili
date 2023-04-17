@@ -2,7 +2,9 @@ import requests
 import random
 import time
 
-_COOKIE = ''  # 將此處替換為你的 cookie 值
+cookie_file = open('cookie.txt', 'r')
+_COOKIE = cookie_file.read()
+cookie_file.close()
 
 def extract_cookies(cookies):
     global _CSRF
