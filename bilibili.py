@@ -172,7 +172,7 @@ if day_status['watch'] is False:
 
 if day_status['coins'] < 50:
     w_log(f'需要投幣')
-    need_number = 5 - (day_status['coins'] / 10)
+    need_number = int(5 - (day_status['coins'] / 10))
     for i in range(need_number):
         video_bvid = random.choice(video_bvids)
         send_coin(video_bvid)
