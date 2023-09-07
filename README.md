@@ -5,7 +5,9 @@
 - 投幣
 - 分享
 - 觀看影片
+- 觀看直播
 
 ### 執行方式
-- dockerfile build 影像
-- 執行影像即可
+- 專案目錄增加 cookie.txt 放入登入過的 cookie 資訊
+- 執行 `./init-bilibili.sh`
+- 即完成當天份額
