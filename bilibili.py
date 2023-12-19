@@ -4,11 +4,6 @@ import time
 import os
 import argparse
 
-dir_path = os.path.dirname(os.path.abspath(__file__))
-cookie_file = open(os.path.join(dir_path, 'cookie.txt'), 'r')
-_COOKIE = cookie_file.read()
-cookie_file.close()
-
 def w_log(msg, filename='log.txt', encoding='utf-8'):
     print(msg)
     if args.logfile is True:
@@ -183,6 +178,9 @@ parser.add_argument('--coins', dest='coins', action='store_true', help='啟用�
 parser.add_argument('--no-coins', dest='coins', action='store_false', help='停用投幣')
 parser.set_defaults(coins=True)
 
+# 添加 Cookie 文件路徑參數
+parser.add_argument('--cookieFile', type=str, required=True, help='指定 cookie.txt 文件的絕對路徑')
+
 # 解析參數
 args = parser.parse_args()
 
@@ -191,8 +189,18 @@ w_log(f"接收到的啟動參數為: {args}")
 
 # 每日任務
 w_log(f'開始 bilibili 每日任務')
-# w_log(f'使用的 Cookie {_COOKIE}')
+
+
+w_log(f'讀取 Cookie')
+dir_path = os.path.dirname(os.path.abspath(__file__))
+cookie_file = open(os.path.join(dir_path, args.cookieFile), 'r')
+_COOKIE = cookie_file.read()
+cookie_file.close()
+w_log(f'讀取 Cookie 完成')
+
+w_log(f'檢查 Cookie')
 extract_cookies(_COOKIE)
+w_log(f'檢查 Cookie 完成')
 
 day_status = get_daily_task_status()
 w_log(f'開始前每日進度: {day_status}')
