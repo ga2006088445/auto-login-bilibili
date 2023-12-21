@@ -33,9 +33,14 @@ def get_user_info():
 # 得到每日任務狀態
 def get_daily_task_status():
     url = 'https://api.bilibili.com/x/member/web/exp/reward'
-    headers = {'cookie': _COOKIE}
+    headers = {
+        'cookie': _COOKIE,
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'
+    }
     resp = requests.get(url, headers=headers)
     resp_json = resp.json()
+    w_log(f'[Debug] 每日任務狀態 : {resp_json}')
+
     login = resp_json['data']['login']
     watch = resp_json['data']['watch']
     coins = resp_json['data']['coins']
