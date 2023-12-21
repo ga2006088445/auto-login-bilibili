@@ -23,7 +23,10 @@ def extract_cookies(cookies):
 # 獲得 各類 B幣值
 def get_user_info():
     url = 'https://api.bilibili.com/x/web-interface/nav'
-    headers = {'cookie': _COOKIE}
+    headers = {
+        'cookie': _COOKIE,
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'
+    }
     resp = requests.get(url, headers=headers)
     resp_json = resp.json()
     current_exp = resp_json['data']['level_info']['current_exp']
@@ -51,7 +54,10 @@ def get_daily_task_status():
 # 排行榜的影片 bvid
 def get_rank_videos():
     url = 'https://api.bilibili.com/x/web-interface/ranking'
-    headers = {'cookie': _COOKIE}
+    headers = {
+        'cookie': _COOKIE,
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'
+    }
     resp = requests.get(url, headers=headers)
     resp_json = resp.json()
     videosInfo = resp_json['data']['list']
@@ -103,7 +109,10 @@ def watch_video(bvid):
         
 def get_day_coin():
     url = 'https://api.bilibili.com/x/web-interface/coin/today/exp'
-    headers = {'cookie': _COOKIE}
+    headers = {
+        'cookie': _COOKIE,
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36'
+    }
     resp = requests.get(url, headers=headers)
     resp_json = resp.json()
     coins = resp_json['data']
